@@ -1,0 +1,21 @@
+{
+  "name": "aws-lambda-authorizer-nodejs",
+  "version": "1.0.0",
+  "description": "Servicio de AWS Lambda para autorización con JWT y DynamoDB",
+  "main": "function.js",
+  "scripts": {
+    "test": "jest --config=jest.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1030.0",
+    "jsonwebtoken": "^9.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "mocha": "^10.2.0",
+    "serverless-offline": "^12.0.4"
+  }
+}

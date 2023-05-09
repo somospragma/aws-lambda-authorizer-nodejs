@@ -1,0 +1,33 @@
+service: lambda-authorizer
+#app: your-app-name
+#tenant: your-tenant-name
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+#  environment:
+#    hostQueue: amqp://localhost
+# role: arn:aws:iam:::
+#  environment:
+#    REGION: ${self:custom.myEnvironment.REGION.${self:custom.myStage}}
+
+#plugins for test in localhost
+plugins:
+  - serverless-offline
+
+functions:
+  lambda:
+    handler: src/main/lambda/function.handler
+    events:
+      - http:
+          path: /auth
+          method: any
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:${self:provider.region}:${self:provider.stage}:userpool/${self:custom.userPoolId}
+            identitySource: method.request.header.Authorization
+            type: COGNITO_USER_POOLS
+            resultTtlInSeconds: 0
+            identityValidationExpression: .*JWT.*
+custom:
+  userPoolId: <cognito-user-pool-id>
