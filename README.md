@@ -32,8 +32,8 @@ Este proyecto contiene una función Lambda desarrollada en Node.js que actúa co
 ## Uso
 
 Enviar una solicitud a la API Gateway:
-    ```bash
+```bash
     curl -X GET https://mi-api-gateway.com/recurso-autorizado -H "Authorization: Bearer {token de acceso JWT}"
-    ```
+```
 
 Si el token es válido y el usuario tiene permiso para acceder al recurso solicitado, la solicitud será procesada. De lo contrario, se devolverá un error.
