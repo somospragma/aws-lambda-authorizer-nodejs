@@ -1,21 +1,24 @@
 'use strict';
 
-const AWS = require('aws-sdk');
 const jwt = require('jsonwebtoken');
-const dynamo = new AWS.DynamoDB.DocumentClient();
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, GetCommand } = require("@aws-sdk/lib-dynamodb");
+
+const client = new DynamoDBClient({});
+const dynamo = DynamoDBDocumentClient.from(client);
 
 exports.handler = async (event) => {
   try {
     const token = event.authorizationToken;
-    const resource = event.methodArn.split('/')[0] + '/*';
+    const resource = event.methodArn;
     
     const decodedToken = jwt.verify(token, process.env.COGNITO_JWT_SECRET);
     const userRole = jwt.decode(token).userRole;
 
-    const result = await dynamo.get({
+    const result = await dynamo.send(new GetCommand({
       TableName: 'TableRoles',
       Key: { userRole },
-    }).promise();
+    }));
 
     if (result && result.Item && result.Item.paths.includes(resource)) {
       return generatePolicy('user', 'Allow', event.methodArn);
